@@ -1,4 +1,4 @@
-package com.example.gardeningcsisapp
+package com.example.gardeningcsisapp.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,10 +11,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.android.volley.toolbox.Volley
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.Request
-
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.example.gardeningcsisapp.ui.MenuActivity
+import com.example.gardeningcsisapp.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,22 +62,21 @@ class MainActivity : AppCompatActivity() {
         val queue = Volley.newRequestQueue(this)
 
         val clicked =
-            JsonObjectRequest(Request.Method.GET,
+            JsonObjectRequest(
+                Request.Method.GET,
                 "https://jwuclasses.com/ugly/login?email=${email}&password=${password}",
                 null,
-                {
-                        data ->
+                { data ->
                     val successValue = data.get("success")
                     //do if statement where if it succeeded to send it to the new page with intent
-                    if(successValue == 1){
+                    if (successValue == 1) {
                         Log.e("MyApp", "Login Successful");
                         val tokenID = data.get("token")
                         val token = tokenID.toString()
                         //val intent = Intent(this, MenuActivity::class.java)
                         //intent.putExtra("token", token)
-                       // startActivity(intent)
-                    }
-                    else{
+                        // startActivity(intent)
+                    } else {
                         val errorMessage = data.get("errormessage")
                         val message = errorMessage.toString()
                         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -94,11 +94,11 @@ class MainActivity : AppCompatActivity() {
         var DataSuccess: Int
 
         val clicked =
-            JsonObjectRequest(Request.Method.GET,
+            JsonObjectRequest(
+                Request.Method.GET,
                 "https://jwuclasses.com/ugly/register?email=${email}&password=${password}",
                 null,
-                {
-                        data ->
+                { data ->
                     val errorMessage = data.get("errormessage")
                     val message = errorMessage.toString()
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

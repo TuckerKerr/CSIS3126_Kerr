@@ -6,11 +6,11 @@
     >
 
     <fragment android:id="@+id/homeFragment"
-        android:name="com.example.gardeningcsisapp.HomeFragment"
+        android:name="com.example.gardeningcsisapp.ui.home.HomeFragment"
         android:label="Home"/>
 
     <fragment android:id="@+id/plantFragment"
-        android:name="com.example.gardeningcsisapp.PlantFragment"
+        android:name="com.example.gardeningcsisapp.ui.plant.PlantFragment"
         android:label="MyPlants"/>
 
     <!--

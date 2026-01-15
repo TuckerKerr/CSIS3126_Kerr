@@ -1,4 +1,4 @@
-package com.example.gardeningcsisapp
+package com.example.gardeningcsisapp.domain.model
 
 class Plants (
     val id: String,
@@ -11,4 +11,3 @@ class Plants (
     val plant_flowering_season: String,
     //Maybe more things? Find this out as I go more into it and get user testing
 )
-

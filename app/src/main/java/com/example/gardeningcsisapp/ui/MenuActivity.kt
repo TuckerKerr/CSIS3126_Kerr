@@ -1,12 +1,11 @@
-package com.example.gardeningcsisapp
+package com.example.gardeningcsisapp.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.gardeningcsisapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MenuActivity : AppCompatActivity(){

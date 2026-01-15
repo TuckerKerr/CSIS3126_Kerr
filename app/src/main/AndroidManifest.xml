@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GardeningCSISApp">
         <activity
-            android:name=".MenuActivity"
+            android:name=".ui.MenuActivity"
             android:exported="false"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.authentication.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
