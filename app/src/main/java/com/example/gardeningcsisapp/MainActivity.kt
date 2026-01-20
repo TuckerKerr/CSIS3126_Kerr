@@ -1,4 +1,4 @@
-package com.example.gardeningcsisapp.ui.authentication
+package com.example.gardeningcsisapp
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,6 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.gardeningcsisapp.ui.MenuActivity
-import com.example.gardeningcsisapp.R
 
 class MainActivity : AppCompatActivity() {
 

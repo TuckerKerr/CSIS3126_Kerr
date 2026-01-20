@@ -1,8 +1,10 @@
 package com.example.gardeningcsisapp.ui.home
 
 import androidx.lifecycle.ViewModel
+import com.example.gardeningcsisapp.ui.plant.PlantUpdateRepository
 
 class HomeViewModel() : ViewModel() {
-    //this will handle database calls as this will be each persons independent data
-    //holds all functions to get the data from the database
+    //this will handle the logic so this will call to the repository file which handles the API Calls
+    private val repository = PlantUpdateRepository()
+
 }

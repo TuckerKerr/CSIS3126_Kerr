@@ -1,8 +1,13 @@
 package com.example.gardeningcsisapp.ui.plant
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import com.example.gardeningcsisapp.domain.model.PlantsSearch
 
-class PlantViewModel() : ViewModel() {
-    //gets data from the API calls to see all possible plants to plant
-    //holds all functions to get the data from API
+class PlantViewModel(application: Application) : AndroidViewModel(application) {
+   //Learn about View Models and how they bridge between fragments and repos (functions)
+    private val repository = PlantRepository(application)
+
+    val plants: LiveData<List<PlantsSearch>> = repository.loadAllPlant()
 }

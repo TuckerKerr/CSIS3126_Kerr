@@ -9,5 +9,6 @@ class Plants (
     val plant_photo: String,
     val plant_sunlight: String,
     val plant_flowering_season: String,
+    val imgURL: String
     //Maybe more things? Find this out as I go more into it and get user testing
 )
