@@ -1,10 +1,23 @@
 package com.example.gardeningcsisapp.ui.home
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gardeningcsisapp.ui.plant.PlantUpdateRepository
 
-class HomeViewModel() : ViewModel() {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
     //this will handle the logic so this will call to the repository file which handles the API Calls
-    private val repository = PlantUpdateRepository()
+    private val updateRepository = PlantUpdateRepository()
+    private val addRepository = PlantUpdateRepository()
+
+    private val _openPlantScreen = MutableLiveData<Unit>()
+    val openPlantScreen: LiveData<Unit> = _openPlantScreen
+
+    fun addPlant(){
+        _openPlantScreen.value = Unit
+        //function with call repo, update live data
+    }
 
 }

@@ -1,17 +1,25 @@
 package com.example.gardeningcsisapp.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.gardeningcsisapp.R
+import com.example.gardeningcsisapp.ui.plant.PlantAddingActivity
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     // TODO: Rename and change types of parameters
+
+    private val homeViewModel: HomeViewModel by viewModels()
+
+    private lateinit var addBtn: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -21,4 +29,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        addBtn = view.findViewById<Button>(R.id.btnAdd)
+
+        addBtn.setOnClickListener {
+            homeViewModel.addPlant()
+        }
+
+        homeViewModel.openPlantScreen.observe(viewLifecycleOwner){
+            val intent = Intent(requireContext(), PlantAddingActivity::class.java)
+            //intent.putExtra("token", $token)
+            startActivity(intent)
+        }
+
+
+    }
+
 }

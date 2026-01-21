@@ -31,6 +31,7 @@ class PlantFragment : Fragment(R.layout.fragment_plant) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
         val recycler = view.findViewById<RecyclerView>(R.id.viewAllPlants)
         recycler.layoutManager = LinearLayoutManager(requireContext())
 
@@ -38,8 +39,10 @@ class PlantFragment : Fragment(R.layout.fragment_plant) {
         recycler.adapter = adapter
 
         viewModel.plants.observe(viewLifecycleOwner){ list ->
-            adapter.updateList(list)
+           adapter.updateList(list)
         }
+        */
+
 
 
     }
