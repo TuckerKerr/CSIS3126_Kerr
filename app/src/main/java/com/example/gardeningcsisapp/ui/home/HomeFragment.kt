@@ -18,10 +18,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private lateinit var addBtn: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,13 +32,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         addBtn = view.findViewById<Button>(R.id.btnAdd)
 
         addBtn.setOnClickListener {
-            homeViewModel.addPlant()
-        }
-
-        homeViewModel.openPlantScreen.observe(viewLifecycleOwner){
             val intent = Intent(requireContext(), PlantAddingActivity::class.java)
             //intent.putExtra("token", $token)
             startActivity(intent)
+        }
+
+        homeViewModel.openPlantScreen.observe(viewLifecycleOwner){
+
         }
 
 

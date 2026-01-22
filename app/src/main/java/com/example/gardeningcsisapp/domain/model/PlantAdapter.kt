@@ -9,11 +9,13 @@ import android.widget.TextView
 import com.example.gardeningcsisapp.R
 import com.squareup.picasso.Picasso
 
-class PlantAdapter(private var list: List<PlantsSearch> = emptyList()):RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
+class PlantAdapter(
+    private var list: List<PlantsSearch> = emptyList(),
+    private val onItemClick: (PlantsSearch) -> Unit
+):RecyclerView.Adapter<PlantAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_plants, parent, false)
-
         return ViewHolder(view)
     }
 
@@ -37,6 +39,9 @@ class PlantAdapter(private var list: List<PlantsSearch> = emptyList()):RecyclerV
             holder.imgPlant.setImageResource(R.drawable.placeholder_image)
         }
 
+        holder.itemView.setOnClickListener {
+            onItemClick(item)
+        }
 
     }
 
@@ -44,11 +49,12 @@ class PlantAdapter(private var list: List<PlantsSearch> = emptyList()):RecyclerV
         return list.size
     }
 
+    /*
     fun updateList(newList: List<PlantsSearch>) {
         list = newList
         notifyDataSetChanged()
     }
-
+    */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val txtPlantID: TextView = itemView.findViewById(R.id.txtID)
 

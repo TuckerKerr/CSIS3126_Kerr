@@ -9,9 +9,10 @@
         android:id="@+id/viewAllPlants"
         android:layout_width="411dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="44dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSearch"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/searchPlant"
+        app:layout_constraintVertical_bias="0.016"
         tools:layout_editor_absoluteX="0dp" />
 
     <Button
@@ -24,17 +25,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/txtSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
+    <SearchView
+        android:id="@+id/searchPlant"
+        android:layout_width="282dp"
+        android:layout_height="52dp"
+        android:queryHint="Search..."
         app:layout_constraintBottom_toBottomOf="@+id/btnBack"
         app:layout_constraintEnd_toStartOf="@+id/btnBack"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnBack"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
