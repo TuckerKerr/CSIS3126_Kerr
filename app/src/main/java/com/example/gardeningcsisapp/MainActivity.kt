@@ -50,7 +50,8 @@ class MainActivity : AppCompatActivity() {
         registerBtn.setOnClickListener ( View.OnClickListener { view ->
             val email = emailInput.text.toString()
             val pass = passwordInput.text.toString()
-            //UserRegister(email, pass)
+            val username = usernameInput.text.toString()
+            UserRegister(username, email, pass)
 
             //commented out currently to stop from errors and sending data
             //to a random file that isnt created
@@ -59,7 +60,6 @@ class MainActivity : AppCompatActivity() {
 
     fun UserLogin(email: String, username: String, password: String){
         val queue = Volley.newRequestQueue(this)
-        Log.e("myapp", "User input: $email, $username, $password")
 
         val clicked =
             JsonObjectRequest(
@@ -68,20 +68,20 @@ class MainActivity : AppCompatActivity() {
                 null,
                 { data ->
                     val successValue = data.get("success")
+                    Log.e("myapp", "Success value: $successValue")
                     //do if statement where if it succeeded to send it to the new page with intent
                     if (successValue == 1) {
                         Log.e("MyApp", "Login Successful");
                         val tokenID = data.getString("token")
                         val token = tokenID.toString()
                         Log.e("myapp","$token")
-                        //val intent = Intent(this, MenuActivity::class.java)
-                        //intent.putExtra("token", token)
-                        // startActivity(intent)
+                        val intent = Intent(this, MenuActivity::class.java)
+                        intent.putExtra("token", token)
+                        startActivity(intent)
                     } else {
                         val errorMessage = data.getString("errormessage")
                         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                     }
-
                 },
                 { error ->
                     Log.e("MyApp", "Did not receive network data");
@@ -92,17 +92,17 @@ class MainActivity : AppCompatActivity() {
         queue.add(clicked);
     }
 
-    fun UserRegister(email: String, password: String){
+    fun UserRegister(username: String, email: String, password: String){
         val queue = Volley.newRequestQueue(this)
-        var DataSuccess: Int
 
         val clicked =
             JsonObjectRequest(
                 Request.Method.GET,
-                "https://jwuclasses.com/ugly/register?email=${email}&password=${password}",
+                "http://10.0.2.2:8888/RootedGardening/login.php?email=$email&username=$username&password=$password&buttonPressed=register",
                 null,
                 { data ->
                     val errorMessage = data.get("errormessage")
+                    Log.e("myapp", "$errorMessage")
                     val message = errorMessage.toString()
                     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
                 },

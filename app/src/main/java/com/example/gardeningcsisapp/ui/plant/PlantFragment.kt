@@ -30,7 +30,9 @@ class PlantFragment : Fragment(R.layout.fragment_plant) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val token = arguments?.getString("token")
 
+        viewModel.getToken()
         /*
         val recycler = view.findViewById<RecyclerView>(R.id.viewAllPlants)
         recycler.layoutManager = LinearLayoutManager(requireContext())
