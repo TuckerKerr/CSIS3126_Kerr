@@ -15,6 +15,8 @@ import com.example.gardeningcsisapp.domain.model.PlantsSearch
 class PlantRepository(private val application: Application) {
 //this class will hold all the calls to the backend for calling your personal plants and such
 //From there the plants will be clickable to open up and see specific data!
+
+    /*
     fun loadAllPlant(): LiveData<List<PlantsSearch>> {
 
         val liveData = MutableLiveData<List<PlantsSearch>>()
@@ -70,4 +72,5 @@ class PlantRepository(private val application: Application) {
         queue.add(request);
         return liveData
     }
+     */
 }

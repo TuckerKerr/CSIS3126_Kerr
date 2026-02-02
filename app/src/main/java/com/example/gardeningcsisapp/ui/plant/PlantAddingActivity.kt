@@ -1,5 +1,6 @@
 package com.example.gardeningcsisapp.ui.plant
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,12 +16,17 @@ import com.android.volley.toolbox.Volley
 import com.example.gardeningcsisapp.R
 import com.example.gardeningcsisapp.domain.model.PlantAdapter
 import com.example.gardeningcsisapp.domain.model.PlantsSearch
+import com.example.gardeningcsisapp.ui.MenuActivity
+import com.example.gardeningcsisapp.ui.authentication.AuthRepository
 
 class PlantAddingActivity : AppCompatActivity() {
     private lateinit var backBtn: Button
     private lateinit var plantSearch: SearchView
     private lateinit var adapter: PlantAdapter
     private lateinit var recyclerView: RecyclerView
+
+    // private val plantViewModel = PlantViewModel(application)
+
     private val plantList = mutableListOf<PlantsSearch>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +36,8 @@ class PlantAddingActivity : AppCompatActivity() {
         val apiToken = "usr-Q4vSk_-frWnzyvQl9CGRb8Yl-F-TmHg_ek_5E96NWwc"
 
         loadPlants(apiToken)
+
+
 
         recyclerView = findViewById(R.id.viewAllPlants)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -60,8 +68,13 @@ class PlantAddingActivity : AppCompatActivity() {
 
     }
 
+
     fun clickedPlants(plant: PlantsSearch){
-        Log.e("myapp", "Plants ID: ${plant.id}")
+        //either intent to another page for adding the plant or do it in this and just change the view
+        val intent = Intent(this, PlantDataActivity::class.java)
+        intent.putExtra("plant_species", plant.plant_species)
+        startActivity(intent)
+        Log.e("myapp", "Plants ID: ${plant.plant_species} & ${plant.id}")
     }
 
     fun searchPlants(search: String?, apiToken: String){
@@ -91,7 +104,7 @@ class PlantAddingActivity : AppCompatActivity() {
 
 
                         Log.e("MyApp","Plant Data: $id, $plant_species, $plant_name, $imgURL")
-                        result.add(PlantsSearch("$id","$plant_name","$plant_species","$imgURL"))
+                        result.add(PlantsSearch("$id","$plant_species","$plant_name","$imgURL"))
                     }
 
                     val recyclerView: RecyclerView = findViewById(R.id.viewAllPlants)

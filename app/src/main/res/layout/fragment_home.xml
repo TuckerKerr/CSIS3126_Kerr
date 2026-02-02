@@ -20,7 +20,11 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="10dp"
         android:background="@drawable/circle_btn"
-        android:text="+" />
+        android:drawableTop="@drawable/ic_add"
+        android:text=""
+        android:gravity="center"
+        android:padding="12dp"
+        />
 
 
 </FrameLayout>

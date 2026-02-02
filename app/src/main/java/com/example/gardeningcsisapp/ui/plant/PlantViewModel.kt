@@ -12,7 +12,7 @@ class PlantViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = PlantRepository(application)
     private val authRepository = AuthRepository(application)
 
-    val plants: LiveData<List<PlantsSearch>> = repository.loadAllPlant()
+    //val plants: LiveData<List<PlantsSearch>> = repository.loadAllPlant()
 
     fun getToken(): String?{
         return authRepository.getToken()

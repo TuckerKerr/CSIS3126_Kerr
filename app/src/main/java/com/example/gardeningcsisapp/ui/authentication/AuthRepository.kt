@@ -3,13 +3,13 @@ package com.example.gardeningcsisapp.ui.authentication
 import android.content.Context
 
 class AuthRepository(private val context: Context) {
-    private val prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+    private val prefs = context.applicationContext.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
 
     fun saveToken(token: String){
-        prefs.edit().putString("token", token).apply()
+        prefs.edit().putString("usertoken", token).apply()
     }
 
     fun getToken(): String?{
-        return prefs.getString("token", null)
+        return prefs.getString("usertoken", null)
     }
 }
