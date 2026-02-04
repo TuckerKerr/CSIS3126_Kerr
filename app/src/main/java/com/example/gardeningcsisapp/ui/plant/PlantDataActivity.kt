@@ -7,8 +7,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +25,8 @@ import com.squareup.picasso.Picasso
 import org.json.JSONObject
 import org.w3c.dom.Text
 import kotlin.String
+import kotlin.getValue
+
 
 class PlantDataActivity: AppCompatActivity() {
 
@@ -35,6 +40,8 @@ class PlantDataActivity: AppCompatActivity() {
     private lateinit var backBtn: Button
     private lateinit var addBtn: Button
 
+    private val viewModel: PlantViewModel by viewModels()
+    private var currentPlant: Plants? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +49,8 @@ class PlantDataActivity: AppCompatActivity() {
         setContentView(R.layout.activity_plantdata)
         val apiToken = "sk-rbVb697a55c86a75914567"
         val plant_species = intent.getStringExtra("plant_species").toString()
+
+        val token = viewModel.getToken()
 
         backBtn = findViewById<Button>(R.id.backBtn)
         addBtn = findViewById<Button>(R.id.addBtn)
@@ -59,6 +68,11 @@ class PlantDataActivity: AppCompatActivity() {
             finish()
         })
 
+
+        addBtn.setOnClickListener (View.OnClickListener { view ->
+            addPlantToDatabase(token)
+        //function call
+        })
 
     }
 
@@ -140,12 +154,15 @@ class PlantDataActivity: AppCompatActivity() {
                             plant_name = response.optString("common_name"),
                             plant_species = response.optString("scientific_name").substring(2, response.optString("scientific_name").length - 2),
                             plant_age = "null",
-                            plant_watering = "null",
+                            plant_watering = rawWater,
                             plant_photo = "null",
                             plant_sunlight = FinalLight,
                             plant_flowering_season = flowering_season,
-                            imgURL = imageUrl
+                            imgURL = imageUrl,
+                            plant_description = response.optString("description")
                         )
+
+                        currentPlant = plants
 
                         plantName.text = response.optString("common_name")
                         plantSpecies.text = response.optString("scientific_name").substring(2, response.optString("scientific_name").length - 2)
@@ -158,6 +175,7 @@ class PlantDataActivity: AppCompatActivity() {
                         plantDescription.text = response.optString("description")
 
                         Log.e("myapp", "$plants")
+
 
                         result.add(plants)
 
@@ -176,4 +194,48 @@ class PlantDataActivity: AppCompatActivity() {
         queue.add(request);
         return liveData
     }
+
+    fun addPlantToDatabase(token: String?){
+        val url = "http://10.0.2.2:8888/RootedGardening/plant_add.php"
+        val queue = Volley.newRequestQueue(application)
+
+        Log.e("myapp", "$currentPlant")
+
+        val plantJson = JSONObject()
+
+        plantJson.put("user_token", token)
+        plantJson.put("plant_name", currentPlant!!.plant_name)
+        plantJson.put("plant_species", currentPlant!!.plant_species)
+        plantJson.put("plant_watering", currentPlant!!.plant_watering)
+        plantJson.put("plant_sunlight", currentPlant!!.plant_sunlight)
+        plantJson.put("plant_flower", currentPlant!!.plant_flowering_season)
+        plantJson.put("plant_image", currentPlant!!.imgURL)
+        plantJson.put("plant_description", currentPlant!!.plant_description)
+
+        Log.e("myapp","plant data for POST: $plantJson")
+
+        val request =
+            JsonObjectRequest(Request.Method.POST,
+                url,
+                plantJson,
+                { response ->
+                    val successValue = response.get("success")
+                    val error = response.get("errormessage")
+
+                    if(successValue == 1){
+                        Toast.makeText(this, "Plant Added!", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    else{
+                        Toast.makeText(this, "ERROR: Data not inserted. Try Again", Toast.LENGTH_SHORT).show()
+                        Log.e("myapp", error.toString())
+                    }
+                },
+                {
+                    Log.e("myapp","error somewhere")
+                }
+            )
+        queue.add(request);
+    }
+
 }

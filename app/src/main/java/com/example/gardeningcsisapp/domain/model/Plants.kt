@@ -1,6 +1,6 @@
 package com.example.gardeningcsisapp.domain.model
 
-class Plants (
+data class Plants (
     val id: String,
     val plant_name: String,
     val plant_species: String,
@@ -9,6 +9,7 @@ class Plants (
     val plant_photo: String,
     val plant_sunlight: String,
     val plant_flowering_season: String,
-    val imgURL: String
+    val imgURL: String,
+    val plant_description: String
     //Maybe more things? Find this out as I go more into it and get user testing
 )

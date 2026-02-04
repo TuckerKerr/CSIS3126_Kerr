@@ -18,6 +18,10 @@ class PlantViewModel(application: Application) : AndroidViewModel(application) {
         return authRepository.getToken()
     }
 
+    fun saveToken(token: String){
+        return authRepository.saveToken(token)
+    }
+
 
 
 }
