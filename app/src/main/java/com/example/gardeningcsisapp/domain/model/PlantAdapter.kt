@@ -1,5 +1,6 @@
 package com.example.gardeningcsisapp.domain.model
 
+import android.graphics.BitmapFactory
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.gardeningcsisapp.R
 import com.squareup.picasso.Picasso
+import android.util.Base64
 
 class PlantAdapter(
     private var list: List<PlantsSearch> = emptyList(),
@@ -29,11 +31,24 @@ class PlantAdapter(
         val imageURL = item.imgURL
 
         if(!imageURL.isNullOrBlank()){
-            Picasso.with(holder.itemView.context)
-                .load(item.imgURL)
-                .placeholder(R.drawable.placeholder_image)
-                .error(R.drawable.placeholder_image)
-                .into(holder.imgPlant)
+            if(imageURL.startsWith("http")){
+                Picasso.with(holder.itemView.context)
+                    .load(imageURL)
+                    .placeholder(R.drawable.placeholder_image)
+                    .error(R.drawable.placeholder_image)
+                    .into(holder.imgPlant)
+            }
+            else{
+                try{
+                    val imageBytes = Base64.decode(imageURL, Base64.NO_WRAP)
+                    val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                    holder.imgPlant.setImageBitmap(bitmap)
+                } catch (e: Exception) {
+                    // If decoding fails, show placeholder
+                    holder.imgPlant.setImageResource(R.drawable.placeholder_image)
+                    android.util.Log.e("PlantAdapter", "Error decoding with image: ${e.message}")
+                }
+            }
         }
         else{
             holder.imgPlant.setImageResource(R.drawable.placeholder_image)
@@ -49,12 +64,12 @@ class PlantAdapter(
         return list.size
     }
 
-    /*
-    fun updateList(newList: List<PlantsSearch>) {
+
+    fun updatePlants(newList: List<PlantsSearch>) {
         list = newList
         notifyDataSetChanged()
     }
-    */
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val txtPlantID: TextView = itemView.findViewById(R.id.txtID)
 
