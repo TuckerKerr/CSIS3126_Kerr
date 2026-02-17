@@ -6,12 +6,24 @@
     tools:context=".ui.home.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/viewWaterPlants"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp" />
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:layout_gravity="center"
-        android:textSize="24sp" />
+        android:layout_marginTop="20dp"
+        android:text="Plants Needed Watering"
+        android:textAlignment="center"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/btnAdd"
@@ -25,6 +37,5 @@
         android:gravity="center"
         android:padding="12dp"
         />
-
 
 </FrameLayout>

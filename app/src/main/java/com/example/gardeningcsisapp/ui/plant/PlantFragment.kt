@@ -1,5 +1,6 @@
 package com.example.gardeningcsisapp.ui.plant
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Layout
 import android.util.Log
@@ -34,13 +35,16 @@ class PlantFragment : Fragment(R.layout.fragment_plant) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val token = viewModel.getToken()
+        viewModel.loadUserPlants(token)
+
         Log.e("myapp", "Plant Page loaded")
 
         val recyclerView: RecyclerView = view.findViewById(R.id.viewUserPlants)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         plantAdapter = PlantAdapter(emptyList()){
-            plant -> clickedPlants(plant)
+            plant -> clickedPlants(plant, token)
         }
         recyclerView.adapter = plantAdapter
 
@@ -50,12 +54,16 @@ class PlantFragment : Fragment(R.layout.fragment_plant) {
             plantAdapter.updatePlants(plantsList)
         }
 
-        val token = viewModel.getToken()
-        viewModel.loadUserPlants(token)
+
     }
 
-    private fun clickedPlants(plant: PlantsSearch) {
-        Log.e("myapp", "Clicked: ${plant.plant_name}")
+    private fun clickedPlants(plant: PlantsSearch, token: String?) {
+        Log.e("myapp", "Clicked: ${plant.id}")
+        val intent =  Intent(requireContext(), UserPlantActivity::class.java)
+        intent.putExtra("plant_id", plant.id)
+        intent.putExtra("token", token)
+        startActivity(intent)
+        //viewModel.clickedPlant(plant)
     }
 
 }

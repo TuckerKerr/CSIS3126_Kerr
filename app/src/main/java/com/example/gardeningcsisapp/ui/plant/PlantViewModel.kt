@@ -27,5 +27,4 @@ class PlantViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-
 }

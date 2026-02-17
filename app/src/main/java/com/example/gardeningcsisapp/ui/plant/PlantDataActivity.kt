@@ -97,15 +97,14 @@ class PlantDataActivity: AppCompatActivity() {
                         // The API returns an object with a "data" array
                         val dataArray = response.getJSONArray("data")
 
-                        for (i in 0 until dataArray.length()) {
-                            val plantObj = dataArray.getJSONObject(i)
+                        val plantObj = dataArray.getJSONObject(0)
 
-                            val plant_id = plantObj.optString("id")
+                        val plant_id = plantObj.optString("id")
 
-                            Log.e("myapp", "$plant_id")
+                        Log.e("myapp", "$plant_id")
 
-                            LoadPlantData(plant_id, token)
-                        }
+                        LoadPlantData(plant_id, token)
+
 
                     } catch (e: Exception) {
                         Log.e("myapp", "Error parsing response: ${e.message}")

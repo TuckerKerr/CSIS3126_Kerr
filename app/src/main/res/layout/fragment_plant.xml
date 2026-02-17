@@ -6,9 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.plant.PlantFragment">
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Your Plants"
+        android:textAlignment="center"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/viewUserPlants"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="50dp" />
 </FrameLayout>

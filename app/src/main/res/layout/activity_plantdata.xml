@@ -31,8 +31,8 @@
 
     <TextView
         android:id="@+id/plantSpeciesTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="249dp"
+        android:layout_height="48dp"
         android:layout_marginTop="12dp"
         android:text="TextView"
         android:textSize="18dp"
@@ -62,21 +62,21 @@
 
     <TextView
         android:id="@+id/flowerTxt"
-        android:layout_width="117dp"
-        android:layout_height="93dp"
+        android:layout_width="116dp"
+        android:layout_height="140dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/descriptionTxt"
         app:layout_constraintEnd_toEndOf="@+id/lightTxt"
         app:layout_constraintStart_toStartOf="@+id/lightTxt"
         app:layout_constraintTop_toBottomOf="@+id/flowerIcon"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="88dp"
         android:text="Description"
         android:textSize="24dp"
         android:textStyle="bold"
@@ -91,18 +91,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <Button
         android:id="@+id/addBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="108dp"
         android:text="Add Plant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -148,7 +146,7 @@
         android:id="@+id/flowerIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="4dp"
         android:src="@drawable/ic_cut"
         app:layout_constraintEnd_toEndOf="@+id/sunIcon"

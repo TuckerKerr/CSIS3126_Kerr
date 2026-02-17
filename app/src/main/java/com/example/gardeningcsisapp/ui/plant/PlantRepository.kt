@@ -69,10 +69,4 @@ val plants: LiveData<List<PlantsSearch>> = _plants
             )
         queue.add(request);
     }
-
-    fun clickedPlants(plant: PlantsSearch){
-        //either intent to another page for adding the plant or do it in this and just change the view
-
-        Log.e("myapp", "Plants clicked")
-    }
 }

@@ -5,13 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.gardeningcsisapp.domain.model.PlantsSearch
 import com.example.gardeningcsisapp.ui.authentication.AuthRepository
 import com.example.gardeningcsisapp.ui.plant.PlantUpdateRepository
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
     //this will handle the logic so this will call to the repository file which handles the API Calls
-    private val updateRepository = PlantUpdateRepository()
+    private val homeRepository = HomeRepository(application)
     private val authRepository = AuthRepository(application)
+    val plants: LiveData<List<PlantsSearch>> = homeRepository.plants
 
 
     private val _openPlantScreen = MutableLiveData<Unit>()
@@ -28,6 +30,16 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getToken(): String?{
         return authRepository.getToken()
+    }
+
+    fun getPlantTime(){
+        val token = authRepository.getToken()
+        homeRepository.checkPlantsDates(token)
+    }
+
+    fun plantWatered(plant_id: String){
+        val token = authRepository.getToken()
+        homeRepository.plantWatered(token, plant_id)
     }
 
 }

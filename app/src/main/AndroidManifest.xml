@@ -24,6 +24,9 @@
             android:name=".ui.plant.PlantDataActivity"
             android:exported="false"/>
         <activity
+            android:name=".ui.plant.UserPlantActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
