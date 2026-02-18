@@ -54,10 +54,11 @@ val plants: LiveData<List<PlantsSearch>> = _plants
                             val defaultImage = plantObj.optString("plant_base_image")
                             val plant_species = plantObj.optString("plant_species")
                             val plant_name = plantObj.optString("plant_name")
+                            val plantsCleanSpecies = plant_species.replace("\\", "")
 
 
                             Log.e("MyApp","Plant Data: $plant_id, $defaultImage, $plant_species, $plant_name")
-                            result.add(PlantsSearch("$plant_id","$plant_name","$plant_species","$defaultImage"))
+                            result.add(PlantsSearch("$plant_id","$plantsCleanSpecies","$plant_name","$defaultImage"))
                         }
                         _plants.value = result
                     }
