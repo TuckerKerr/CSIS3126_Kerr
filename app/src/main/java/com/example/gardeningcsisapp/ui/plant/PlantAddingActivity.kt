@@ -18,6 +18,7 @@ import com.example.gardeningcsisapp.domain.model.PlantAdapter
 import com.example.gardeningcsisapp.domain.model.PlantsSearch
 import com.example.gardeningcsisapp.ui.MenuActivity
 import com.example.gardeningcsisapp.ui.authentication.AuthRepository
+import org.json.JSONObject
 
 class PlantAddingActivity : AppCompatActivity() {
     private lateinit var backBtn: Button
@@ -33,9 +34,8 @@ class PlantAddingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_plantadding)
-        val apiToken = "usr-Q4vSk_-frWnzyvQl9CGRb8Yl-F-TmHg_ek_5E96NWwc"
-
-        loadPlants(apiToken)
+        readJSONFromFile()
+        loadPlants()
 
 
 
@@ -56,16 +56,29 @@ class PlantAddingActivity : AppCompatActivity() {
         plantSearch = findViewById<SearchView>(R.id.searchPlant)
         plantSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(search: String?): Boolean {
-                searchPlants(search, apiToken)
+                searchPlants(search)
                 return true
             }
 
             override fun onQueryTextSubmit(search: String?): Boolean {
-                searchPlants(search, apiToken)
+                searchPlants(search)
                 return true
             }
         })
 
+    }
+
+    fun readJSONFromFile():String? {
+        var json: String? = null
+        try{
+            val inputStream = assets.open("Keys.json")
+            json = inputStream.bufferedReader().use { it.readText()}
+        }catch (ex: Exception){
+            ex.printStackTrace()
+            return null
+        }
+        //Log.e("myapp", json)
+        return json
     }
 
 
@@ -77,15 +90,16 @@ class PlantAddingActivity : AppCompatActivity() {
         Log.e("myapp", "Plants ID: ${plant.plant_species} & ${plant.id}")
     }
 
-    fun searchPlants(search: String?, apiToken: String){
+    fun searchPlants(search: String?){
         var result = ArrayList<PlantsSearch>()
-
+        val apiKeys = readJSONFromFile()
+        val token = JSONObject(apiKeys).getString("trefleAPIKey")
         val queue = Volley.newRequestQueue(this)
 
 
         val clicked =
             JsonObjectRequest(Request.Method.GET,
-                "https://trefle.io/api/v1/plants/search?token=$apiToken&q=$search&filter_not[common_name]=null",
+                "https://trefle.io/api/v1/plants/search?token=$token&q=$search&filter_not[common_name]=null",
                 null,
                 {
                         data ->
@@ -121,12 +135,13 @@ class PlantAddingActivity : AppCompatActivity() {
         queue.add(clicked);
     }
 
-    fun loadPlants(apiToken: String){
+    fun loadPlants(){
         var result = ArrayList<PlantsSearch>()
-
+        val apiKeys = readJSONFromFile()
+        val token = JSONObject(apiKeys).getString("trefleAPIKey")
 
         val queue = Volley.newRequestQueue(this)
-        val url = "https://trefle.io/api/v1/plants?token=$apiToken"
+        val url = "https://trefle.io/api/v1/plants?token=$token"
 
 
         val clicked =
@@ -166,5 +181,4 @@ class PlantAddingActivity : AppCompatActivity() {
         clicked.setShouldCache(false)
         queue.add(clicked);
     }
-
 }

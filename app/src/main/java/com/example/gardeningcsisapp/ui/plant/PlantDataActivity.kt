@@ -53,7 +53,6 @@ class PlantDataActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_plantdata)
-        val apiToken = "sk-rbVb697a55c86a75914567"
         val plant_species = intent.getStringExtra("plant_species").toString()
 
         val token = viewModel.getToken()
@@ -68,7 +67,7 @@ class PlantDataActivity: AppCompatActivity() {
         plantDescription = findViewById<TextView>(R.id.descriptionTxt)
         plantImg = findViewById<ImageView>(R.id.plantImg)
 
-        findPlantID(plant_species, apiToken)
+        findPlantID(plant_species)
 
         backBtn.setOnClickListener(View.OnClickListener { view ->
             finish()
@@ -81,7 +80,10 @@ class PlantDataActivity: AppCompatActivity() {
 
     }
 
-    fun findPlantID(plant_species: String, token: String) {
+    fun findPlantID(plant_species: String) {
+        val allTokens = readJSONFromFile()
+        val token = JSONObject(allTokens).getString("perenualAPIKey")
+        Log.e("myapp", "perenual token: $token")
         val url = "https://perenual.com/api/v2/species-list?q=$plant_species&key=$token"
 
         val queue = Volley.newRequestQueue(application)
@@ -266,5 +268,17 @@ class PlantDataActivity: AppCompatActivity() {
         inputStream.close()
 
         Base64.encodeToString(bytes, Base64.NO_WRAP)
+    }
+
+    fun readJSONFromFile():String? {
+        val json = try{
+            application.assets.open("Keys.json")
+                .bufferedReader().use { it.readText()}
+        }catch (ex: Exception){
+            ex.printStackTrace()
+            return null
+        }
+        //Log.e("myapp", json)
+        return json
     }
 }

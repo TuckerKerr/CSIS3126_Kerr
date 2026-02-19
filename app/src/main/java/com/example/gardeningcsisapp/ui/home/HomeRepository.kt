@@ -136,7 +136,11 @@ class HomeRepository (private val application: Application) {
     }
 
     fun getWeather(latitude: Double, longitude: Double, result: (String?) -> Unit){
-        val url = "https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=ea584889928a5d28a322bb5f659adf8c"
+        val alltoken = readJSONFromFile()
+        val token = JSONObject(alltoken).getString("openWeatherAPIKey")
+        //Log.e("myapp", "token for openweatherapp: $token")
+        //check the token to make sure you got the right one then implement into the other files
+        val url = "https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$token"
         val queue = Volley.newRequestQueue(application)
         Log.e("myapp", url)
         val request =
@@ -197,4 +201,17 @@ class HomeRepository (private val application: Application) {
     fun clearMessage(){
         _message.value = null
     }
+
+    fun readJSONFromFile():String? {
+        val json = try{
+            application.assets.open("Keys.json")
+            .bufferedReader().use { it.readText()}
+        }catch (ex: Exception){
+            ex.printStackTrace()
+            return null
+        }
+        //Log.e("myapp", json)
+        return json
+    }
 }
+
