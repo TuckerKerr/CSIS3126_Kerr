@@ -64,6 +64,10 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     fun fetchLocation() {
         val token = authRepository.getToken()
+        val APItoken = ""
+
+
+
         fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
             loc?.let {
                 _location.value = Pair(it.latitude, it.longitude)

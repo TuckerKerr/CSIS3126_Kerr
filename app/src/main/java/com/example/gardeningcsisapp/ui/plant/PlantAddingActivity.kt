@@ -18,6 +18,7 @@ import com.example.gardeningcsisapp.domain.model.PlantAdapter
 import com.example.gardeningcsisapp.domain.model.PlantsSearch
 import com.example.gardeningcsisapp.ui.MenuActivity
 import com.example.gardeningcsisapp.ui.authentication.AuthRepository
+import org.json.JSONObject
 
 class PlantAddingActivity : AppCompatActivity() {
     private lateinit var backBtn: Button
@@ -33,9 +34,7 @@ class PlantAddingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_plantadding)
-        val apiToken = "usr-Q4vSk_-frWnzyvQl9CGRb8Yl-F-TmHg_ek_5E96NWwc"
-
-        loadPlants(apiToken)
+        loadPlants()
 
 
 
@@ -56,18 +55,17 @@ class PlantAddingActivity : AppCompatActivity() {
         plantSearch = findViewById<SearchView>(R.id.searchPlant)
         plantSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(search: String?): Boolean {
-                searchPlants(search, apiToken)
+                searchPlants(search)
                 return true
             }
 
             override fun onQueryTextSubmit(search: String?): Boolean {
-                searchPlants(search, apiToken)
+                searchPlants(search)
                 return true
             }
         })
 
     }
-
 
     fun clickedPlants(plant: PlantsSearch){
         //either intent to another page for adding the plant or do it in this and just change the view
@@ -77,25 +75,26 @@ class PlantAddingActivity : AppCompatActivity() {
         Log.e("myapp", "Plants ID: ${plant.plant_species} & ${plant.id}")
     }
 
-    fun searchPlants(search: String?, apiToken: String){
+    fun searchPlants(search: String?){
         var result = ArrayList<PlantsSearch>()
-
         val queue = Volley.newRequestQueue(this)
-
 
         val clicked =
             JsonObjectRequest(Request.Method.GET,
-                "https://trefle.io/api/v1/plants/search?token=$apiToken&q=$search&filter_not[common_name]=null",
+                "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=trefleSearch&search=$search",
                 null,
                 {
                         data ->
 
-                    val dataArray = data.getJSONArray("data")
-                    var count = dataArray.length()
+                    val dataArray = data.optString("data")
+                    val response = JSONObject(dataArray)
+                    val realData = response.getJSONArray("data");
+                    var count = realData.length()
                     Log.e("MyApp", "$count")
 
+
                     for(i in 0 until count){
-                        val plantObj = dataArray.getJSONObject(i)
+                        val plantObj = realData.optJSONObject(i)
 
                         val id = plantObj.optString("id")
                         val plant_species = plantObj.optString("scientific_name")
@@ -113,7 +112,6 @@ class PlantAddingActivity : AppCompatActivity() {
                     val plantAdapter = PlantAdapter(
                         result, {plant -> clickedPlants(plant)})
                     recyclerView.adapter = plantAdapter
-
                 },
                 { Log.e("MyApp", "Did not receive network data"); })
 
@@ -121,12 +119,11 @@ class PlantAddingActivity : AppCompatActivity() {
         queue.add(clicked);
     }
 
-    fun loadPlants(apiToken: String){
+    fun loadPlants(){
         var result = ArrayList<PlantsSearch>()
 
-
         val queue = Volley.newRequestQueue(this)
-        val url = "https://trefle.io/api/v1/plants?token=$apiToken"
+        val url = "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=trefleLoad"
 
 
         val clicked =
@@ -136,29 +133,31 @@ class PlantAddingActivity : AppCompatActivity() {
                 {
                         data ->
 
-                        val dataArray = data.getJSONArray("data")
-                        var count = dataArray.length()
-                        Log.e("MyApp", "$count")
+                    val dataArray = data.optString("data")
+                    val response = JSONObject(dataArray)
+                    val realData = response.getJSONArray("data");
+                    var count = realData.length()
+                    Log.e("MyApp", "$count")
 
-                        for(i in 0 until count){
-                            val plantObj = dataArray.getJSONObject(i)
+                    for(i in 0 until count){
+                        val plantObj = realData.getJSONObject(i)
 
-                            val id = plantObj.optString("id")
-                            val plant_species = plantObj.optString("scientific_name")
-                            val plant_name = plantObj.optString("common_name")
-                            val imgURL = plantObj.optString("image_url")
+                        val id = plantObj.optString("id")
+                        val plant_species = plantObj.optString("scientific_name")
+                        val plant_name = plantObj.optString("common_name")
+                        val imgURL = plantObj.optString("image_url")
 
 
-                            Log.e("MyApp","Plant Data: $id, $plant_species, $plant_name, $imgURL")
-                            result.add(PlantsSearch("$id","$plant_name","$plant_species","$imgURL"))
-                        }
+                        Log.e("MyApp","Plant Data: $id, $plant_species, $plant_name, $imgURL")
+                        result.add(PlantsSearch("$id","$plant_name","$plant_species","$imgURL"))
+                    }
 
-                        val recyclerView: RecyclerView = findViewById(R.id.viewAllPlants)
-                        recyclerView.layoutManager = LinearLayoutManager(this)
+                    val recyclerView: RecyclerView = findViewById(R.id.viewAllPlants)
+                    recyclerView.layoutManager = LinearLayoutManager(this)
 
-                        val plantAdapter = PlantAdapter(
-                            result, {plant -> clickedPlants(plant)})
-                        recyclerView.adapter = plantAdapter
+                    val plantAdapter = PlantAdapter(
+                        result, {plant -> clickedPlants(plant)})
+                    recyclerView.adapter = plantAdapter
 
                 },
                 { Log.e("MyApp", "Did not receive network data"); })
@@ -166,5 +165,4 @@ class PlantAddingActivity : AppCompatActivity() {
         clicked.setShouldCache(false)
         queue.add(clicked);
     }
-
 }

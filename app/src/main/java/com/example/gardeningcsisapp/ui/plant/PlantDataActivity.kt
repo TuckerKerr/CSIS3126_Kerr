@@ -27,6 +27,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
 import org.w3c.dom.Text
 import java.net.URL
@@ -53,7 +54,6 @@ class PlantDataActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_plantdata)
-        val apiToken = "sk-rbVb697a55c86a75914567"
         val plant_species = intent.getStringExtra("plant_species").toString()
 
         val token = viewModel.getToken()
@@ -68,7 +68,7 @@ class PlantDataActivity: AppCompatActivity() {
         plantDescription = findViewById<TextView>(R.id.descriptionTxt)
         plantImg = findViewById<ImageView>(R.id.plantImg)
 
-        findPlantID(plant_species, apiToken)
+        findPlantID(plant_species)
 
         backBtn.setOnClickListener(View.OnClickListener { view ->
             finish()
@@ -81,8 +81,8 @@ class PlantDataActivity: AppCompatActivity() {
 
     }
 
-    fun findPlantID(plant_species: String, token: String) {
-        val url = "https://perenual.com/api/v2/species-list?q=$plant_species&key=$token"
+    fun findPlantID(plant_species: String) {
+        val url = "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=perenualFindID&plant_species=$plant_species"
 
         val queue = Volley.newRequestQueue(application)
 
@@ -95,15 +95,12 @@ class PlantDataActivity: AppCompatActivity() {
 
                     try {
                         // The API returns an object with a "data" array
-                        val dataArray = response.getJSONArray("data")
+                        val dataArray = response.optString("data")
+                        val data = JSONObject(dataArray).getString("data")
+                        val plant_id = JSONArray(data).getJSONObject(0).optString("id")
+                        Log.e("myapp", "Plant OBJ: $plant_id")
 
-                        val plantObj = dataArray.getJSONObject(0)
-
-                        val plant_id = plantObj.optString("id")
-
-                        Log.e("myapp", "$plant_id")
-
-                        LoadPlantData(plant_id, token)
+                        LoadPlantData(plant_id)
 
 
                     } catch (e: Exception) {
@@ -117,12 +114,9 @@ class PlantDataActivity: AppCompatActivity() {
         queue.add(request);
     }
 
-    fun LoadPlantData(plant_id: String, token: String): LiveData<List<Plants>> {
+    fun LoadPlantData(plant_id: String): LiveData<List<Plants>> {
         val liveData = MutableLiveData<List<Plants>>()
-        val url = "https://perenual.com/api/v2/species/details/$plant_id?key=$token"
-
-
-        Log.e("myapp", "$url")
+        val url = "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=perenualLoadPlantData&plant_id=$plant_id"
         val queue = Volley.newRequestQueue(application)
 
         val request =
@@ -134,24 +128,32 @@ class PlantDataActivity: AppCompatActivity() {
                     var result = mutableListOf<Plants>()
 
                     try {
-                        // The API returns an object with a "data" array
-                        // Get the default_image object and extract the thumbnail URL
-                        val defaultImage = response.optJSONObject("default_image")
-                        val imageUrl = defaultImage?.optString("small_url") ?: ""
+                        Log.e("myapp", "Plant Data: $response")
 
-                        val plant_watering_days = response.optString("watering_general_benchmark")
+                        // The API returns an object with a "data" array
+                        val dataArray = response.optString("data")
+                        Log.e("myapp", "Plant Data: $dataArray")
+                        val data = JSONObject(dataArray)
+                        Log.e("myapp", "Plant Data: $data")
+
+                        // Get the default_image object and extract the thumbnail URL
+                        val defaultImage = data.optJSONObject("default_image")
+                        val imageUrl = defaultImage?.optString("small_url") ?: ""
+                        Log.e("myapp", imageUrl)
+
+                        val plant_watering_days = data.optString("watering_general_benchmark")
                         val waterJson = JSONObject(plant_watering_days)
                         val waterValue = waterJson.optString("value")
                         val waterUnit = waterJson.optString("unit")
                         val rawWater = waterValue.trim('"')
                         val plants_watering = "$rawWater $waterUnit"
 
-                        val plant_light = response.getJSONArray("sunlight")
+                        val plant_light = data.getJSONArray("sunlight")
                         val FinalLight = (0 until plant_light.length()).joinToString(", ") {
                             plant_light.getString(it)
                         }
 
-                        val flowering = response.getJSONArray("pruning_month")
+                        val flowering = data.getJSONArray("pruning_month")
                         val flowering_season =
                             (0 until flowering.length()).joinToString(", ") { flowering.getString(it) }
 
@@ -159,31 +161,31 @@ class PlantDataActivity: AppCompatActivity() {
                         Log.e("myapp", "light: $FinalLight")
 
                         val plants = Plants(
-                            id = response.optString("id"),
-                            plant_name = response.optString("common_name"),
-                            plant_species = response.optString("scientific_name")
-                                .substring(2, response.optString("scientific_name").length - 2),
+                            id = data.optString("id"),
+                            plant_name = data.optString("common_name"),
+                            plant_species = data.optString("scientific_name")
+                                .substring(2, data.optString("scientific_name").length - 2),
                             plant_age = "null",
                             plant_watering = rawWater,
                             plant_photo = "null",
                             plant_sunlight = FinalLight,
                             plant_flowering_season = flowering_season,
                             imgURL = imageUrl,
-                            plant_description = response.optString("description")
+                            plant_description = data.optString("description")
                         )
 
                         currentPlant = plants
 
-                        plantName.text = response.optString("common_name")
-                        plantSpecies.text = response.optString("scientific_name")
-                            .substring(2, response.optString("scientific_name").length - 2)
+                        plantName.text = data.optString("common_name")
+                        plantSpecies.text = data.optString("scientific_name")
+                            .substring(2, data.optString("scientific_name").length - 2)
                         plantWater.text = plants_watering
                         plantLight.text = FinalLight
                         plantFlowering.text = flowering_season
                         Picasso.with(this)
                             .load(imageUrl)
                             .into(plantImg)
-                        plantDescription.text = response.optString("description")
+                        plantDescription.text = data.optString("description")
 
                         Log.e("myapp", "$plants")
 

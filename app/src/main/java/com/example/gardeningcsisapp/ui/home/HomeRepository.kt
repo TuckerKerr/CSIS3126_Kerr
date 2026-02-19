@@ -136,7 +136,8 @@ class HomeRepository (private val application: Application) {
     }
 
     fun getWeather(latitude: Double, longitude: Double, result: (String?) -> Unit){
-        val url = "https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=ea584889928a5d28a322bb5f659adf8c"
+        //check the token to make sure you got the right one then implement into the other files
+        val url = "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=GetWeather&latitude=$latitude&longitude=$longitude"
         val queue = Volley.newRequestQueue(application)
         Log.e("myapp", url)
         val request =
@@ -145,8 +146,9 @@ class HomeRepository (private val application: Application) {
                 url,
                 null,
                 { response ->
-                    Log.e("myapp", "getWeather Response: $response")
-                    val weather = response.getJSONArray("weather")
+
+                    val dataArray = response.optString("data")
+                    val weather = JSONObject(dataArray).getJSONArray("weather")
                     val weatherJson = weather.getJSONObject(0)
                     val weatherType = weatherJson.getString("main")
                     Log.e("myapp", "Weather: $weatherType")
@@ -198,3 +200,4 @@ class HomeRepository (private val application: Application) {
         _message.value = null
     }
 }
+
