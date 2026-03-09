@@ -81,7 +81,7 @@ class PlantAddingActivity : AppCompatActivity() {
 
         val clicked =
             JsonObjectRequest(Request.Method.GET,
-                "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=trefleSearch&search=$search"
+                "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=trefleSearch&search=$search",
                 null,
                 {
                         data ->
