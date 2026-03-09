@@ -83,7 +83,6 @@ class PlantDataActivity: AppCompatActivity() {
 
     fun findPlantID(plant_species: String) {
         val url = "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=perenualFindID&plant_species=$plant_species"
-
         val queue = Volley.newRequestQueue(application)
 
         val request =

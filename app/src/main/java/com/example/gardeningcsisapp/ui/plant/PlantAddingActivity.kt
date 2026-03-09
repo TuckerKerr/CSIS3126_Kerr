@@ -66,7 +66,7 @@ class PlantAddingActivity : AppCompatActivity() {
         })
 
     }
-
+    
     fun clickedPlants(plant: PlantsSearch){
         //either intent to another page for adding the plant or do it in this and just change the view
         val intent = Intent(this, PlantDataActivity::class.java)
@@ -81,7 +81,7 @@ class PlantAddingActivity : AppCompatActivity() {
 
         val clicked =
             JsonObjectRequest(Request.Method.GET,
-                "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=trefleSearch&search=$search",
+                "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=trefleSearch&search=$search"
                 null,
                 {
                         data ->
@@ -122,10 +122,9 @@ class PlantAddingActivity : AppCompatActivity() {
     fun loadPlants(){
         var result = ArrayList<PlantsSearch>()
 
-        val queue = Volley.newRequestQueue(this)
         val url = "http://10.0.2.2:8888/RootedGardening/APICalls.php?action=trefleLoad"
-
-
+        val queue = Volley.newRequestQueue(this)
+        
         val clicked =
             JsonObjectRequest(Request.Method.GET,
                 url,
