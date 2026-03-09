@@ -13,7 +13,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.gardeningcsisapp.domain.model.PlantsSearch
 import com.example.gardeningcsisapp.ui.authentication.AuthRepository
-import com.example.gardeningcsisapp.ui.plant.PlantUpdateRepository
 import com.google.android.gms.location.LocationServices
 
 class HomeViewModel(application: Application) : AndroidViewModel(application) {
