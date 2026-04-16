@@ -63,7 +63,12 @@ class PlantFragment : Fragment(R.layout.fragment_plant) {
         intent.putExtra("plant_id", plant.id)
         intent.putExtra("token", token)
         startActivity(intent)
-        //viewModel.clickedPlant(plant)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val token = viewModel.getToken()
+        viewModel.loadUserPlants(token)
     }
 
 }

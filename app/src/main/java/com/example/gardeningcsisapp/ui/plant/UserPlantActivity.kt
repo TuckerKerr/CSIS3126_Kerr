@@ -34,6 +34,7 @@ class UserPlantActivity: AppCompatActivity()  {
     private lateinit var plantWatering: TextView
     private lateinit var plantDug: TextView
     private lateinit var backBtn: Button
+    private lateinit var btnDelete: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class UserPlantActivity: AppCompatActivity()  {
         val userToken = intent.getStringExtra("token").toString()
 
         backBtn = findViewById<Button>(R.id.backBtn)
+        btnDelete = findViewById<Button>(R.id.btnDelete)
         plantName = findViewById<TextView>(R.id.plantNameTxt)
         plantSpecies = findViewById<TextView>(R.id.plantSpeciesTxt)
         plantWater = findViewById<TextView>(R.id.waterTxt)
@@ -55,9 +57,33 @@ class UserPlantActivity: AppCompatActivity()  {
             finish()
         })
 
+        btnDelete.setOnClickListener(View.OnClickListener { view ->
+            deletePlant(plant_id, userToken)
+        })
+
         Log.e("myapp", plant_id)
         loadPlantData(plant_id, userToken)
 
+    }
+
+    fun deletePlant(plant_id: String?, userToken: String){
+        val url = "http://10.0.2.2:8888/RootedGardening/deletePlant.php?userToken=$userToken&plant_id=$plant_id"
+        val queue = Volley.newRequestQueue(application)
+
+        val request =
+            JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                { response ->
+                    Log.e("myapp", response.optString("errormessage"))
+                    finish()
+                },
+                { error ->
+                    Log.e("myapp", "$error")
+                }
+            )
+        queue.add(request);
     }
 
     fun loadPlantData(plant_id: String?, userToken: String){
