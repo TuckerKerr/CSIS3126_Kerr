@@ -1,3 +1,36 @@
-This is my final project. To run it locally, you will need to either import the project or create a project with Android API 24 "Nougat". There is a deep file structure, so it is best to install the files and folders I have created as the paths are specific.
-There are PHP files within this project that you will need all of and you will need to use MAMP for rerunning this as well. The filepaths are all routed through MAMP's htdocs in a folder titled "RootedGardening"
-SQL Dumps for the tables are in the files above, labeled that way for you to copy and paste to create the proper database layout for data. Make sure you have stable internet access as the app calls three different APIs. The API keys will be attached to the separate submitted information.
+1. Set Up Android Project
+Open Android Studio
+Import the provided project (recommended due to deep file structure)
+OR create a new project using: Minimum SDK: API 24 (Nougat)
+Make sure all folders/files are placed exactly as provided (paths matter)
+
+2. Set Up MAMP (Backend)
+Install and open MAMP
+Navigate to the htdocs folder inside MAMP
+Create a folder named: RootedGardening
+Place all the provided PHP files inside this folder
+
+3. Set Up the Database
+Open MAMP’s phpMyAdmin
+Create a new database (name can match your project)
+Use the provided SQL dump files:
+Copy and paste each into phpMyAdmin
+Run them to create the tables and structure
+
+4. Configure API Keys
+Locate where API keys are used in the project (provided separately)
+Insert your API keys file in the RootedGardening PHP file
+
+5. Run the Backend
+Start servers in MAMP (Apache + MySQL)
+Confirm your backend is running by visiting: http://localhost:8888/RootedGardening/
+
+6. Run the Android App
+Open the project in Android Studio
+Let Gradle sync
+Run the app on an emulator or device
+
+⚠️ Important Notes
+You must have internet access (app uses multiple external APIs)
+Do not change file paths, as the app depends on them
+Ensure PHP files are correctly placed in htdocs/RootedGardening
