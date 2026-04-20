@@ -1,3 +1,3 @@
 This is my final project. To run it locally, you will need to either import the project or create a project with Android API 24 "Nougat". There is a deep file structure, so it is best to install the files and folders I have created as the paths are specific.
 There are PHP files within this project that you will need all of and you will need to use MAMP for rerunning this as well. The filepaths are all routed through MAMP's htdocs in a folder titled "RootedGardening"
-SQL Dumps for the tables are in the files above, labeled that way for you to copy and paste to create the proper database layout for data. Make sure you have stable internet access as the app calls three different APIs.
+SQL Dumps for the tables are in the files above, labeled that way for you to copy and paste to create the proper database layout for data. Make sure you have stable internet access as the app calls three different APIs. The API keys will be attached to the separate submitted information.
