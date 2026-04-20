@@ -1,0 +1,30 @@
+CREATE DATABASE gardeningapp;
+
+CREATE TABLE `userplants` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_token` varchar(255) NOT NULL,
+  `plant_name` varchar(255) NOT NULL,
+  `plant_species` varchar(255) NOT NULL,
+  `plant_watering_cycle` varchar(255) NOT NULL,
+  `plant_watering_days` int(11) NOT NULL,
+  `last_watered` datetime NOT NULL,
+  `planted` varchar(255) NOT NULL,
+  `plant_desired_sunlight` varchar(255) NOT NULL,
+  `plant_photo` text NOT NULL,
+  `plant_base_image` text NOT NULL,
+  `plant_description` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_token` (`user_token`),
+  FOREIGN KEY (`user_token`) REFERENCES `users` (`token`)
+);
+
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `hashed_pass` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token_UNIQUE` (`token`)
+);
