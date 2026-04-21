@@ -88,9 +88,10 @@ class PlantAddingActivity : AppCompatActivity() {
 
                     val dataArray = data.optString("data")
                     val response = JSONObject(dataArray)
+                    Log.e("MyApp", "RESPONSE: $response")
                     val realData = response.getJSONArray("data");
                     var count = realData.length()
-                    Log.e("MyApp", "$count")
+                    Log.e("MyApp", "COUNT: $count")
 
 
                     for(i in 0 until count){

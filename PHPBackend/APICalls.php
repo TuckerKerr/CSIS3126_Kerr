@@ -68,6 +68,10 @@ if(isset($action)){
             $search = mysqli_real_escape_string($connection, $_GET['search']);
             $token = $jsonKeys["trefleAPIKey"];
 
+            if($search == ""){
+                $search = "a";
+            }
+
             $url = "https://trefle.io/api/v1/plants/search?token=$token&q=$search&filter_not[common_name]=null";
 
             $ch = curl_init($url);
